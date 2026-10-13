@@ -10,7 +10,7 @@ const checkinoutSchema = new mongoose.Schema({
         },
         required: true,
     },
-    checkOut: { type: Date, required: true }
+    checkOut: { type: Date }
 }, {
     timestamps: true
 })
