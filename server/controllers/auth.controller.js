@@ -51,5 +51,23 @@ const login = async (req, res, next) => {
     }
 }
 
+const getMe = async (req, res, next) => {
+    try {
+        const _id = req.user;
 
-module.exports = { register, login }
+        const user = await User.findOne(_id);
+
+        if (!user) {
+            const err = new Error("user not found");
+            err.status = 404;
+            throw err;
+        }
+
+        return res.status(200).json({ message: "user fetched successfully", data: user })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { register, login, getMe }
