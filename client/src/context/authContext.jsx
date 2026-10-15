@@ -20,7 +20,10 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false)
             }
         }
-        fetchCurrentUser()
+        const token = localStorage.getItem("token")
+        if (token) {
+            fetchCurrentUser()
+        }
     }, [])
 
     const register = async (userData) => {

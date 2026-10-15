@@ -1,0 +1,692 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+    --wt-primary: #168f91;
+    --wt-primary-dark: #087476;
+    --wt-green: #159b78;
+    --wt-text: #172b3a;
+    --wt-muted: #778893;
+    --wt-background: #f3f7f9;
+    --wt-border: #e9eff1;
+}
+
+.worktrack-dashboard {
+    width: 100%;
+    max-width: 900px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 24px;
+    box-sizing: border-box;
+
+    background: var(--wt-background);
+    color: var(--wt-text);
+
+    font-family: "Inter", sans-serif;
+}
+
+/* Header */
+
+.wt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    margin-bottom: 32px;
+}
+
+.wt-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.wt-brand-icon {
+    display: grid;
+    place-items: center;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 13px;
+
+    background: var(--wt-primary);
+    color: white;
+}
+
+.wt-brand h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+
+.wt-brand p {
+    margin: 4px 0 0;
+    color: var(--wt-muted);
+    font-size: 10px;
+}
+
+.wt-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.wt-date {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #506574;
+    font-size: 12px;
+}
+
+.wt-icon-button {
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--wt-border);
+    border-radius: 50%;
+
+    background: white;
+    color: var(--wt-text);
+
+    cursor: pointer;
+}
+
+.wt-user-avatar {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #c9eee4;
+    color: #08796f;
+
+    font-weight: 700;
+}
+
+/* Greeting */
+
+.wt-greeting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 26px;
+    margin-bottom: 22px;
+
+    border-radius: 21px;
+
+    background: linear-gradient(125deg,
+            #ffffff 55%,
+            #e7f7f4);
+}
+
+.wt-eyebrow {
+    color: var(--wt-primary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.7px;
+}
+
+.wt-greeting h1 {
+    margin: 9px 0;
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.wt-greeting p {
+    margin: 0;
+    color: var(--wt-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.wt-greeting-decoration {
+    width: 74px;
+    height: 74px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 23px;
+    background: #d7f1eb;
+    color: var(--wt-primary);
+}
+
+/* Alerts */
+
+.wt-alert {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 13px 15px;
+    margin-bottom: 15px;
+
+    border-radius: 11px;
+    font-size: 13px;
+}
+
+.wt-alert-error {
+    background: #fff0ef;
+    color: #bd3939;
+    border: 1px solid #f8d4d0;
+}
+
+.wt-alert-success {
+    background: #e8f8f1;
+    color: #157b5d;
+    border: 1px solid #c9eddd;
+}
+
+/* Checked-in banner */
+
+.wt-status-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 17px;
+    margin-bottom: 18px;
+
+    border: 1px solid #d5f0e5;
+    border-radius: 15px;
+
+    background: #e8f8f1;
+}
+
+.wt-status-check {
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background: #179b77;
+    color: white;
+}
+
+.wt-status-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.wt-status-copy strong {
+    font-size: 13px;
+}
+
+.wt-status-copy span {
+    color: var(--wt-muted);
+    font-size: 11px;
+}
+
+.wt-status-badge {
+    margin-left: auto;
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+    background: #cef0e2;
+    color: #16775b;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Time card */
+
+.wt-time-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 27px 15px;
+    margin-bottom: 20px;
+
+    border: 1px solid #edf1f3;
+    border-radius: 19px;
+
+    background: #ffffff;
+    text-align: center;
+}
+
+.wt-time-label {
+    color: #657985;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
+.wt-time-card h2 {
+    margin: 12px 0 5px;
+
+    font-size: clamp(33px, 7vw, 45px);
+    font-weight: 800;
+    letter-spacing: -1.7px;
+    font-variant-numeric: tabular-nums;
+}
+
+.wt-time-card>p {
+    margin: 0;
+    color: var(--wt-muted);
+    font-size: 11px;
+}
+
+.wt-countdown,
+.wt-eligible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    margin-top: 17px;
+    padding: 9px 13px;
+
+    border-radius: 10px;
+
+    background: #fff6e5;
+    color: #94621a;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.wt-eligible {
+    background: #e7f8ef;
+    color: #157b5d;
+}
+
+/* Check-in button */
+
+.wt-checkin-button {
+    width: 190px;
+    height: 190px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin: 8px auto 27px;
+
+    border: 5px solid #e0f5ed;
+    border-radius: 50%;
+
+    background: linear-gradient(145deg,
+            #20ad87,
+            #078467);
+
+    color: white;
+    cursor: pointer;
+
+    box-shadow: 0 12px 30px rgba(17, 142, 109, 0.19);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.wt-checkin-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 17px 34px rgba(17, 142, 109, 0.25);
+}
+
+.wt-checkin-button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.wt-action-icon {
+    display: grid;
+    place-items: center;
+}
+
+.wt-action-title {
+    font-size: 21px;
+    font-weight: 750;
+}
+
+.wt-action-subtitle {
+    font-size: 11px;
+    opacity: 0.9;
+}
+
+/* Check-out button */
+
+.wt-checkout-button {
+    width: 100%;
+    min-height: 77px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    margin-bottom: 26px;
+    padding: 14px 20px;
+
+    border: none;
+    border-radius: 17px;
+
+    background: linear-gradient(110deg,
+            #fa654e,
+            #ed493b);
+
+    color: white;
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.wt-checkout-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.wt-checkout-button:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+}
+
+.wt-checkout-button>span {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.wt-checkout-button strong {
+    font-size: 16px;
+}
+
+.wt-checkout-button small {
+    font-size: 11px;
+}
+
+/* Location card */
+
+.wt-location-card {
+    padding: 22px;
+    margin-top: 8px;
+
+    border: 1px solid #eaf0f2;
+    border-radius: 19px;
+
+    background: white;
+}
+
+.wt-card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.wt-card-heading h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.wt-card-heading p {
+    margin: 6px 0 0;
+    color: var(--wt-muted);
+    font-size: 11px;
+}
+
+.wt-location-icon {
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+    background: #e4f5f2;
+    color: var(--wt-primary);
+}
+
+.wt-location-main {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+
+    padding-bottom: 17px;
+    margin-bottom: 7px;
+
+    border-bottom: 1px solid var(--wt-border);
+}
+
+.wt-map-placeholder {
+    width: 110px;
+    height: 93px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+    background:
+        linear-gradient(35deg,
+            transparent 46%,
+            rgba(22, 143, 145, 0.09) 47%,
+            rgba(22, 143, 145, 0.09) 53%,
+            transparent 54%),
+        #eef7f4;
+
+    color: var(--wt-primary);
+}
+
+.wt-map-placeholder span {
+    color: #5e797c;
+    font-size: 10px;
+}
+
+.wt-location-coordinates {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    overflow-wrap: anywhere;
+}
+
+.wt-location-coordinates strong {
+    font-size: 12px;
+}
+
+.wt-location-coordinates span {
+    color: var(--wt-muted);
+    font-size: 11px;
+}
+
+.wt-detail-row {
+    display: grid;
+    grid-template-columns: 21px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid var(--wt-border);
+
+    color: #536873;
+    font-size: 11px;
+}
+
+.wt-detail-row:last-child {
+    border-bottom: none;
+}
+
+.wt-detail-row svg {
+    color: var(--wt-primary);
+}
+
+.wt-detail-row strong {
+    color: var(--wt-text);
+    font-size: 11px;
+    text-align: right;
+}
+
+.wt-empty-location {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    padding: 20px 14px;
+    margin-bottom: 8px;
+
+    border-radius: 12px;
+    background: #f5f9fa;
+    color: var(--wt-primary);
+}
+
+.wt-empty-location strong {
+    color: var(--wt-text);
+    font-size: 12px;
+}
+
+.wt-empty-location p {
+    margin: 6px 0 0;
+    color: var(--wt-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Footer */
+
+.wt-footer {
+    padding: 27px 0 8px;
+    color: #9aa9b0;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+}
+
+/* Loading */
+
+.worktrack-loading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: var(--wt-background);
+    color: var(--wt-primary-dark);
+    font-family: "Inter", sans-serif;
+}
+
+/* Responsive */
+
+@media (min-width: 768px) {
+    .worktrack-dashboard {
+        padding: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .worktrack-dashboard {
+        padding: 18px 15px;
+    }
+
+    .wt-header {
+        margin-bottom: 23px;
+    }
+
+    .wt-brand h2 {
+        font-size: 18px;
+    }
+
+    .wt-brand p {
+        font-size: 9px;
+    }
+
+    .wt-date {
+        display: none;
+    }
+
+    .wt-greeting {
+        padding: 21px 18px;
+        border-radius: 17px;
+    }
+
+    .wt-greeting-decoration {
+        width: 52px;
+        height: 52px;
+        border-radius: 15px;
+    }
+
+    .wt-greeting-decoration svg {
+        width: 30px;
+    }
+
+    .wt-status-banner {
+        padding: 13px;
+        gap: 9px;
+    }
+
+    .wt-status-copy strong {
+        font-size: 11px;
+    }
+
+    .wt-status-badge {
+        padding: 7px 9px;
+        font-size: 10px;
+    }
+
+    .wt-time-card {
+        padding: 24px 12px;
+    }
+
+    .wt-checkin-button {
+        width: 170px;
+        height: 170px;
+    }
+
+    .wt-location-card {
+        padding: 17px 14px;
+    }
+
+    .wt-location-main {
+        gap: 12px;
+    }
+
+    .wt-map-placeholder {
+        width: 90px;
+        height: 86px;
+    }
+
+    .wt-detail-row {
+        gap: 7px;
+        font-size: 10px;
+    }
+
+    .wt-detail-row strong {
+        font-size: 10px;
+    }
+}

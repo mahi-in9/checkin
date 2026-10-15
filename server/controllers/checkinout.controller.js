@@ -2,7 +2,7 @@ const CheckInOut = require("../models/checkinout.model")
 
 const checkIn = async (req, res, next) => {
     try {
-        const { checkIn, location } = req.body;
+        const { location } = req.body;
         const userId = req.user._id;
 
         const activeCheckIn = await CheckInOut.findOne({
@@ -18,12 +18,12 @@ const checkIn = async (req, res, next) => {
 
         const checkinout = await CheckInOut.create({
             userId,
-            checkIn,
             location,
+            ipAddress: req.ip,
             checkOut: null
         });
 
-        return res.status(201).json({ success: true, message: "Checked In Successfully" })
+        return res.status(201).json({ success: true, message: "Checked In Successfully", data: checkinout })
     } catch (error) {
         next(error)
     }
@@ -32,7 +32,7 @@ const checkIn = async (req, res, next) => {
 const checkOut = async (req, res, next) => {
     try {
         const userId = req.user._id;
-        const { checkOut } = req.body;
+        const checkOut = new Date()
 
         const checkedIn = await CheckInOut.findOne({
             userId,
@@ -45,27 +45,39 @@ const checkOut = async (req, res, next) => {
             throw err;
         }
 
-        const date1 = new Date(checkedIn.checkIn)
-        const date2 = new Date(checkOut)
+        const workedMs = checkOut.getTime() - checkedIn.checkIn.getTime()
+        const eightHoursMs = 8 * 60 * 60 * 1000
 
-        date1.setHours(date1.getHours() + 8)
-
-        if (date1 !== date2) {
+        if (workedMs < eightHoursMs) {
             const err = new Error("You didn't completed your 8hours")
             err.status = 400;
             throw err;
         }
 
         checkedIn.checkOut = checkOut;
+        await checkedIn.save();
 
-        checkedIn.save();
-
-        return res.status(202).json({ success: true, message: "successfully checked out" })
+        return res.status(200).json({ success: true, message: "successfully checked out", data: checkedIn })
 
     } catch (error) {
         next(error)
     }
 }
 
-module.exports = { checkIn, checkOut }
+
+const getAllAttendance = async (req, res, next) => {
+    try {
+        const attendanceData = await CheckInOut.find()
+            .populate("userId", "name email department")
+            .sort({ checkIn: -1 })
+
+        return res.status(200).json({ success: true, message: "all attendance fetched", data: attendanceData })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+module.exports = { checkIn, checkOut, getAllAttendance }
 
