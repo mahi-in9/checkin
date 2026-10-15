@@ -47,7 +47,7 @@ export default function LocationMap() {
           </span>
 
           {attendanceData.map((p, i) => (
-            <span key={attendanceData._id} className="pin" style={{ left: `${p.location.latitude}%`, top: `${p.location.longitudee}%` }}>
+            <span key={p._id} className="pin" style={{ left: `${p.location.latitude}%`, top: `${p.location.longitude}%` }}>
               <svg width="30" height="36" viewBox="0 0 30 36">
                 <path d="M15 0C7 0 1 6 1 14c0 10 14 22 14 22s14-12 14-22C29 6 23 0 15 0z" fill="#0f9a88" />
                 <circle cx="15" cy="14" r="5" fill="#fff" />

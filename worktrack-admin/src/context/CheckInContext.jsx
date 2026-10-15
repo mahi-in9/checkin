@@ -5,14 +5,17 @@ const CheckInContext = createContext(null);
 
 export const CheckInProvider = ({ children }) => {
     const [attendanceData, setAttendanceData] = useState([]);
+    const [loading, setLoading] = useState(false)
 
-    const fetchAttendanceData = async () => {
+    const fetchAttendanceData = async (date = todayDate()) => {
         try {
-            const res = await api.get("/api/checkinout");
-
+            setLoading(true)
+            const res = await api.post("/api/checkinout/date", { date });
             setAttendanceData(res.data.data || []);
         } catch (error) {
             console.error("Failed to fetch attendance:", error);
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -20,11 +23,24 @@ export const CheckInProvider = ({ children }) => {
         fetchAttendanceData();
     }, []);
 
+    const todayDate = () => {
+        const parts = new Intl.DateTimeFormat("en-CA", {
+            timeZone: "Asia/Kolkata",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        }).formatToParts(new Date());
+
+        const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+        return `${values.year}-${values.month}-${values.day}`;
+    };
+
     return (
         <CheckInContext.Provider
             value={{
                 attendanceData,
                 fetchAttendanceData,
+                loading
             }}
         >
             {children}

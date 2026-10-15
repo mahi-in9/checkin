@@ -8,6 +8,7 @@ import LocationMap from "./components/LocationMap.jsx";
 import SummaryDonut from "./components/SummaryDonut.jsx";
 import { EmployeesPage, ReportsPage, SettingsPage } from "./pages/OtherPages.jsx";
 import { employees, stats } from "./data.js";
+import { useCheckIn } from "./context/CheckInContext.jsx";
 
 const titles = {
   dashboard: ["Dashboard", "Overview of your team's activity."],
@@ -21,25 +22,38 @@ export default function App() {
   const [page, setPage] = useState("attendance");
   const [query, setQuery] = useState("");
   const [dept, setDept] = useState("All Departments");
-  const [date, setDate] = useState(new Date("2025-05-14"));
+  const [date, setDate] = useState(new Date(Date.now()));
+
+  const { attendanceData, fetchAttendanceData, loading } = useCheckIn()
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return employees.filter(
+    return attendanceData.filter(
       (e) =>
-        (dept === "All Departments" || e.dept === dept) &&
-        (!q || [e.name, e.dept, e.location, e.ip].some((v) => v.toLowerCase().includes(q)))
+        (e.userId.name.toLowerCase().includes(q) || e.userId.email.toLowerCase().includes(q))
     );
-  }, [query, dept]);
+  }, [query, attendanceData]);
+
+  const dateValue = [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("-")
 
   const shiftDay = (n) => setDate((d) => new Date(d.getTime() + n * 86400000));
   const dateLabel = date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
   const [title, subtitle] = titles[page];
   const showTable = page === "attendance" || page === "dashboard";
 
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setDate(new Date(`${selectedDate}T00:00:00`));
+    fetchAttendanceData(selectedDate);
+  };
+
   return (
     <div className="layout">
-      <Sidebar page={page} onNavigate={setPage} />
+      {/* <Sidebar page={page} onNavigate={setPage} /> */}
 
       <main className="main">
         <Topbar query={query} onQuery={setQuery} />
@@ -52,14 +66,16 @@ export default function App() {
             </div>
             {page === "attendance" && (
               <div className="date-picker">
-                <Icon name="calendar" size={18} />
-                <span>{dateLabel}</span>
+                {/* <Icon name="calendar" size={18} /> */}
+                {/* <span>{dateLabel}</span> */}
+                <input type="date" value={dateValue} onChange={handleDateChange} />
                 <button onClick={() => shiftDay(1)} aria-label="Next day"><Icon name="chevRight" size={16} /></button>
               </div>
             )}
           </div>
 
           {showTable && <StatCards stats={stats} />}
+
           {showTable && (
             <AttendanceTable rows={rows} query={query} onQuery={setQuery} dept={dept} onDept={setDept} />
           )}

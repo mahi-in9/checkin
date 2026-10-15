@@ -1,15 +1,15 @@
-import React from "react";
 import Icon from "./Icons.jsx";
+import { NavLink } from "react-router-dom";
 
 const items = [
-  { key: "dashboard", label: "Dashboard", icon: "home" },
-  { key: "attendance", label: "Attendance", icon: "clock" },
-  { key: "employees", label: "Employees", icon: "users" },
-  { key: "reports", label: "Reports", icon: "report" },
-  { key: "settings", label: "Settings", icon: "settings" },
+  { key: "dashboard", route: "/dashboard", label: "Dashboard", icon: "home" },
+  { key: "attendance", route: "/", label: "Attendance", icon: "clock" },
+  { key: "employees", route: "/employees", label: "Employees", icon: "users" },
+  { key: "reports", route: "/reports", label: "Reports", icon: "report" },
+  { key: "settings", route: "/settings", label: "Settings", icon: "settings" },
 ];
 
-export default function Sidebar({ page, onNavigate }) {
+export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="brand">
@@ -22,14 +22,15 @@ export default function Sidebar({ page, onNavigate }) {
 
       <nav className="nav">
         {items.map((it) => (
-          <button
+          <NavLink
             key={it.key}
-            className={"nav-item" + (page === it.key ? " active" : "")}
-            onClick={() => onNavigate(it.key)}
+            to={it.route}
+            end={it.route === "/"}
+            className={({ isActive }) => "nav-item" + (isActive ? " active" : "")}
           >
             <Icon name={it.icon} size={20} />
             <span>{it.label}</span>
-          </button>
+          </NavLink>
         ))}
       </nav>
 

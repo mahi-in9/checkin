@@ -65,19 +65,44 @@ const checkOut = async (req, res, next) => {
 }
 
 
-const getAllAttendance = async (req, res, next) => {
+// const getAllAttendance = async (req, res, next) => {
+//     try {
+//         const attendanceData = await CheckInOut.find()
+//             .populate("userId", "name email department")
+//             .sort({ checkIn: -1 })
+
+//         return res.status(200).json({ success: true, message: "all attendance fetched", data: attendanceData })
+
+//     } catch (error) {
+//         next(error)
+//     }
+// }
+
+const getAttendanceByDate = async (req, res, next) => {
     try {
-        const attendanceData = await CheckInOut.find()
-            .populate("userId", "name email department")
-            .sort({ checkIn: -1 })
+        const { date } = req.body;
 
-        return res.status(200).json({ success: true, message: "all attendance fetched", data: attendanceData })
+        if (typeof date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            return res.status(400).json({ success: false, message: "Invalid date" });
+        }
 
+        const startOfDay = new Date(`${date}T00:00:00+05:30`);
+        const endOfDay = new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000);
+
+        const attendanceData = await CheckInOut.find({
+            checkIn: { $gte: startOfDay, $lt: endOfDay },
+        }).populate("userId", "name email department");
+
+
+        return res.status(200).json({
+            success: true,
+            message: "Today's attendance fetched successfully",
+            data: attendanceData,
+            // userId: req.user._id
+        });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
-
-module.exports = { checkIn, checkOut, getAllAttendance }
-
+module.exports = { checkIn, checkOut, getAttendanceByDate }

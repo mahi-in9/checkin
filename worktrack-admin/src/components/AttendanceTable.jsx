@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "./Icons.jsx";
 import { departments, initials } from "../data.js";
-import api from "../api/api.js"
 import { useCheckIn } from "../context/CheckInContext.jsx";
 
 function RowMenu({ employee }) {
@@ -30,11 +29,12 @@ function RowMenu({ employee }) {
   );
 }
 
-const badgeClass = (s) => ({ "Checked In": "in", "Checked Out": "out", Absent: "absent" }[s]);
+// const badgeClass = (s) => ({ "Checked In": "in", "Checked Out": "out", Absent: "absent" }[s]);
 
-export default function AttendanceTable({ rows, query, onQuery, dept, onDept, title = "Today's Attendance" }) {
+export default function AttendanceTable({ rows = [], userId, query, onQuery, dept, onDept, title = "Today's Attendance" }) {
 
-  const { attendanceData } = useCheckIn()
+  console.log("AttendanceTable rows:", rows)
+  console.log("AttendanceTable userId:", userId)
 
   return (
     <section className="card table-card">
@@ -45,12 +45,13 @@ export default function AttendanceTable({ rows, query, onQuery, dept, onDept, ti
             <Icon name="search" size={16} />
             <input placeholder="Search employees..." value={query} onChange={(e) => onQuery(e.target.value)} />
           </div>
-          <div className="select-wrap">
-            <select value={dept} onChange={(e) => onDept(e.target.value)}>
+          {/* <div className="select-wrap">
+            <select value={dept} onChange={(e) =>
+              onDept(e.target.value)}>
               {departments.map((d) => <option key={d}>{d}</option>)}
             </select>
             <Icon name="chevDown" size={16} />
-          </div>
+          </div> */}
           <button className="icon-btn boxed" aria-label="Filters"><Icon name="filter" size={18} /></button>
         </div>
       </div>
@@ -71,37 +72,42 @@ export default function AttendanceTable({ rows, query, onQuery, dept, onDept, ti
             </tr>
           </thead>
           <tbody>
-            {attendanceData && attendanceData.map((e, i) => (
-              <tr key={e._id}>
-                <td className="c-num">{i + 1}</td>
-                <td>
-                  <div className="emp">
-                    <div className="avatar" style={{ background: e.color }}>{initials(e.userId.name)}</div>
-                    <div>
-                      <strong>{e.userId.name}</strong>
-                      {/* <span>{e.role}</span> */}
+            {rows.map((e, i) => {
+              // API attendance records have a populated `userId`; local/demo employee
+              // rows use `name` directly. Support both while data sources are unified.
+              const employeeName = e.userId?.name || e.name || "Unknown employee";
+              return (
+                <tr key={e._id || e.id || `${employeeName}-${i}`}>
+                  <td className="c-num">{i + 1}</td>
+                  <td>
+                    <div className="emp">
+                      <div className="avatar" style={{ background: e.color || "#64748b" }}>{initials(employeeName)}</div>
+                      <div>
+                        <strong>{employeeName}</strong>
+                        {/* <span>{e.role}</span> */}
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>
-                  {new Date(e.checkIn).toLocaleTimeString("en-IN", {
+                  </td>
+                  <td>
+                    {new Date(e.checkIn).toLocaleTimeString("en-IN", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </td>
+                  <td>{e.checkOut ? new Date(e.checkOut).toLocaleTimeString("en-IN", {
                     hour: "2-digit",
                     minute: "2-digit",
                     hour12: true,
-                  })}
-                </td>
-                <td>{e.checkOut ? new Date(e.checkOut).toLocaleTimeString("en-IN", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                }) : (<p>-</p>)}</td>
-                {/* <td>{e.hours}</td> */}
-                {/* <td>{e.location}</td> */}
-                {/* <td>{e.ip}</td> */}
-                {/* <td><span className={"badge " + badgeClass(e.status)}>{e.status}</span></td> */}
-                <td className="c-act"><RowMenu employee={e} /></td>
-              </tr>
-            ))}
+                  }) : (<p>-</p>)}</td>
+                  {/* <td>{e.hours}</td> */}
+                  {/* <td>{e.location}</td> */}
+                  {/* <td>{e.ip}</td> */}
+                  {/* <td><span className={"badge " + badgeClass(e.status)}>{e.status}</span></td> */}
+                  <td className="c-act"><RowMenu employee={e} /></td>
+                </tr>
+              )
+            })}
             {rows.length === 0 && (
               <tr><td colSpan={9} className="empty">No employees match your filters.</td></tr>
             )}
