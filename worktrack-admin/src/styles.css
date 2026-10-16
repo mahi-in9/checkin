@@ -436,11 +436,61 @@ p {
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 0 16px;
+
     height: 44px;
     font-weight: 500;
     min-width: 210px;
     justify-content: space-between;
+}
+
+.date-input {
+    width: 100%;
+    height: 46px;
+    padding: 0 12px;
+    box-sizing: border-box;
+
+    background-color: #ffffff;
+    color: #0f172a;
+
+    border: 1px solid #dbe2ea;
+    border-radius: 8px;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+
+    outline: none;
+    cursor: pointer;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover */
+.date-input:hover {
+    border-color: #94a3b8;
+}
+
+/* Focus */
+.date-input:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+/* Calendar icon */
+.date-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 4px;
+}
+
+.date-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Disabled state */
+.date-input:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
 }
 
 .date-picker button {

@@ -152,6 +152,9 @@ function Login() {
                     Don't have an account?{" "}
                     <Link to="/signup">Create account</Link>
                 </p>
+                <p className="auth-switch">
+                    <Link to="/forgot-password">Forgot password?</Link>
+                </p>
 
                 <div className="auth-footer">
                     WORKTRACK · PEOPLE · PRESENCE · PROGRESS

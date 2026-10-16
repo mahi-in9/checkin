@@ -5,6 +5,8 @@ import Sidebar from "../components/Sidebar.jsx";
 import Login from "../pages/Login.jsx";
 import Signup from "../pages/Signup.jsx";
 import { useAuth } from "../context/authContext.jsx";
+import ForgotPassword from "../pages/ForgotPassword.jsx";
+import ResetPassword from "../pages/ResetPassword.jsx";
 
 function AuthLoader() {
     const { loading } = useAuth();
@@ -55,6 +57,8 @@ function PageRoute() {
                     <Route element={<PublicRoute />}>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/reset-password/:token" element={<ResetPassword />} />
                     </Route>
 
                     {/* Protected — any logged in user */}

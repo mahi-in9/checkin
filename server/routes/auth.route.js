@@ -1,4 +1,4 @@
-const { register, login, getMe, allUsers } = require("../controllers/auth.controller")
+const { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers } = require("../controllers/auth.controller")
 const express = require("express")
 const router = express.Router()
 
@@ -8,8 +8,11 @@ const requireRole = require("../middlewares/requireRole")
 
 router.post("/register", register)
 router.post("/login", login)
+router.post("/forgot-password", forgotPasswordControllers)
+router.post("/reset-password/:token", resetPasswordControllers)
 router.use(authMiddleware)
 router.get("/me", getMe)
 router.get("/users", requireRole("admin"), allUsers)
+
 
 module.exports = router

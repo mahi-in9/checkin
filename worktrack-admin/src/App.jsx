@@ -70,8 +70,8 @@ export default function App() {
               <div className="date-picker">
                 {/* <Icon name="calendar" size={18} /> */}
                 {/* <span>{dateLabel}</span> */}
-                <input type="date" value={dateValue} onChange={handleDateChange} />
-                <button onClick={() => shiftDay(1)} aria-label="Next day"><Icon name="chevRight" size={16} /></button>
+                <input type="date" className="date-input" value={dateValue} onChange={handleDateChange} />
+                {/* <button onClick={() => shiftDay(1)} aria-label="Next day"><Icon name="chevRight" size={16} /></button> */}
               </div>
             )}
           </div>
