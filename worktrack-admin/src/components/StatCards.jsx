@@ -31,7 +31,7 @@ export default function StatCards({ stats }) {
   const cards = [
     {
       label: "Total Employees", value: totalUsers, tone: "mint", icon: "users",
-      sub: <span className="up"><Icon name="arrowUp" size={13} stroke={2.2} /> {pct(totalUsers)}% from last month</span>
+      sub: <span className="up"><Icon name="arrowUp" size={13} stroke={2.2} /> {pct(totalUsers)}% users</span>
     },
     { label: "Checked In", value: checkedInCount, tone: "green", icon: "check", sub: `${pct(checkedInCount)}% of total` },
     { label: "Checked Out", value: checkedOutCount, tone: "grey", icon: "clock", sub: `${pct(checkedOutCount)}% of total` },
