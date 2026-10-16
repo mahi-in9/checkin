@@ -1,11 +1,12 @@
 import React from "react";
 import Icon from "./Icons.jsx";
+import { useCheckIn } from "../context/CheckInContext.jsx";
 
 export default function StatCards({ stats }) {
   const pct = (n) => Math.round((n / stats.total) * 100);
   const cards = [
-    { label: "Total Employees", value: stats.total, tone: "mint", icon: "users",
-      sub: <span className="up"><Icon name="arrowUp" size={13} stroke={2.2} /> +12% from last month</span> },
+    // { label: "Total Employees", value: stats.total, tone: "mint", icon: "users",
+    //   sub: <span className="up"><Icon name="arrowUp" size={13} stroke={2.2} /> +12% from last month</span> },
     { label: "Checked In", value: stats.checkedIn, tone: "green", icon: "check", sub: `${pct(stats.checkedIn)}% of total` },
     { label: "Checked Out", value: stats.checkedOut, tone: "grey", icon: "clock", sub: `${pct(stats.checkedOut)}% of total` },
     { label: "Absent", value: stats.absent, tone: "red", icon: "user", sub: `${pct(stats.absent)}% of total` },

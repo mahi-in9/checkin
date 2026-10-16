@@ -1,33 +1,33 @@
-import { useEffect, useRef, useState } from "react";
+// import { useEffect, useRef, useState } from "react";
 import Icon from "./Icons.jsx";
 import { departments, initials } from "../data.js";
-import { useCheckIn } from "../context/CheckInContext.jsx";
+// import { useCheckIn } from "../context/CheckInContext.jsx";
 
-function RowMenu({ employee }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+// function RowMenu({ employee }) {
+//   const [open, setOpen] = useState(false);
+//   const ref = useRef(null);
 
-  useEffect(() => {
-    const close = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
+//   useEffect(() => {
+//     const close = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
+//     document.addEventListener("mousedown", close);
+//     return () => document.removeEventListener("mousedown", close);
+//   }, []);
 
-  return (
-    <div className="row-menu" ref={ref}>
-      <button className="icon-btn plain" onClick={() => setOpen((o) => !o)} aria-label="Row actions">
-        <Icon name="more" size={18} />
-      </button>
-      {open && (
-        <div className="menu">
-          <button onClick={() => { alert(`Viewing ${employee.name}`); setOpen(false); }}>View details</button>
-          <button onClick={() => { alert(`Editing attendance for ${employee.name}`); setOpen(false); }}>Edit attendance</button>
-          <button onClick={() => { alert(`Report exported for ${employee.name}`); setOpen(false); }}>Export report</button>
-        </div>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div className="row-menu" ref={ref}>
+//       <button className="icon-btn plain" onClick={() => setOpen((o) => !o)} aria-label="Row actions">
+//         <Icon name="more" size={18} />
+//       </button>
+//       {open && (
+//         <div className="menu">
+//           <button onClick={() => { alert(`Viewing ${employee.name}`); setOpen(false); }}>View details</button>
+//           <button onClick={() => { alert(`Editing attendance for ${employee.name}`); setOpen(false); }}>Edit attendance</button>
+//           <button onClick={() => { alert(`Report exported for ${employee.name}`); setOpen(false); }}>Export report</button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
 
 // const badgeClass = (s) => ({ "Checked In": "in", "Checked Out": "out", Absent: "absent" }[s]);
 
@@ -57,7 +57,7 @@ export default function AttendanceTable({ rows = [], userId, query, onQuery, dep
         <table>
           <thead>
             <tr>
-              <th className="c-num">#</th>
+              <th className="c-num">Sl</th>
               <th>Employee</th>
               <th>Check In</th>
               <th>Check Out</th>
@@ -65,7 +65,7 @@ export default function AttendanceTable({ rows = [], userId, query, onQuery, dep
               {/* <th>Location</th> */}
               {/* <th>IP Address</th> */}
               {/* <th>Status</th> */}
-              <th className="c-act"><Icon name="more" size={16} /></th>
+              {/* <th className="c-act"><Icon name="more" size={16} /></th> */}
             </tr>
           </thead>
           <tbody>
@@ -101,7 +101,7 @@ export default function AttendanceTable({ rows = [], userId, query, onQuery, dep
                   {/* <td>{e.location}</td> */}
                   {/* <td>{e.ip}</td> */}
                   {/* <td><span className={"badge " + badgeClass(e.status)}>{e.status}</span></td> */}
-                  <td className="c-act"><RowMenu employee={e} /></td>
+                  {/* <td className="c-act"><RowMenu employee={e} /></td> */}
                 </tr>
               )
             })}

@@ -14,7 +14,7 @@ export default function Topbar({ query, onQuery }) {
       </div>
 
       <div className="topbar-right">
-        <button className="icon-btn" aria-label="Notifications">
+        {/* <button className="icon-btn" aria-label="Notifications">
           <Icon name="bell" size={22} />
           <span className="dot" />
         </button>
@@ -22,7 +22,7 @@ export default function Topbar({ query, onQuery }) {
           <div className="avatar teal">AS</div>
           <span>Admin User</span>
           <Icon name="chevDown" size={16} />
-        </button>
+        </button> */}
       </div>
     </header>
   );
