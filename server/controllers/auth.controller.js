@@ -15,7 +15,7 @@ const register = async (req, res, next) => {
 
         const user = await User.create({ name, email, password: hashPassword, role })
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: "7d" })
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_TOKEN, { expiresIn: "8h" })
 
         return res.status(201).json({ success: true, message: "user created successfully", data: { token, user } })
 
@@ -42,7 +42,7 @@ const login = async (req, res, next) => {
             throw err;
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: "7d" })
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_TOKEN, { expiresIn: "8h" })
 
         return res.status(200).json({ success: true, message: "user logged-in successfully", data: { token, user } })
 

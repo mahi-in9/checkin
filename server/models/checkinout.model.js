@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const checkinoutSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    checkIn: { type: Date, required: true, default: Date.now() },
+    checkIn: { type: Date, required: true, default: Date.now },
     location: {
         type: {
             latitude: Number,

@@ -33,9 +33,6 @@ function RowMenu({ employee }) {
 
 export default function AttendanceTable({ rows = [], userId, query, onQuery, dept, onDept, title = "Today's Attendance" }) {
 
-  console.log("AttendanceTable rows:", rows)
-  console.log("AttendanceTable userId:", userId)
-
   return (
     <section className="card table-card">
       <div className="table-head">

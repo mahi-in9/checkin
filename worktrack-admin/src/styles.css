@@ -34,6 +34,16 @@ button {
     cursor: pointer;
 }
 
+.auth-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-size: 15px;
+    color: var(--muted);
+    background: var(--bg);
+}
+
 h1,
 h2,
 h3,
@@ -169,17 +179,67 @@ p {
     padding: 0 8px 4px;
 }
 
+.side-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
 .side-user strong {
     display: block;
     color: #fff;
     font-weight: 500;
     font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .side-user span {
     font-size: 12.5px;
     color: #a9d2d0;
 }
+
+/* ---------- Sidebar auth buttons ---------- */
+.sidebar-logout-btn {
+    background: transparent;
+    border: none;
+    color: #a9d2d0;
+    display: grid;
+    place-items: center;
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-logout-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+.sidebar-login-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: none;
+    background: var(--sidebar-active);
+    color: #e6f4f3;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.sidebar-login-btn:hover {
+    background: #3fd3b4;
+    color: #0a5b60;
+}
+
 
 /* ---------- Avatars ---------- */
 .avatar {
@@ -303,6 +363,45 @@ p {
     font-size: 14px;
     font-weight: 500;
     color: var(--text);
+}
+
+/* ---------- Topbar auth buttons ---------- */
+.topbar-logout-btn,
+.topbar-login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    border: none;
+    white-space: nowrap;
+}
+
+.topbar-logout-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.topbar-logout-btn:hover {
+    background: #fca5a5;
+    color: #7f1d1d;
+    box-shadow: 0 2px 8px rgba(185, 28, 28, 0.15);
+}
+
+.topbar-login-btn {
+    background: var(--primary);
+    color: #fff;
+}
+
+.topbar-login-btn:hover {
+    background: #0a8070;
+    box-shadow: 0 2px 8px rgba(15, 154, 136, 0.3);
 }
 
 .content {

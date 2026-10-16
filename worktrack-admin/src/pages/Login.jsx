@@ -46,8 +46,6 @@ function Login() {
         }
     };
 
-    if (error) return <p>{error}</p>
-
     return (
         <main className="auth-page">
             <section className="auth-card">

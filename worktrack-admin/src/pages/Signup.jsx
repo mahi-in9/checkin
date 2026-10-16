@@ -125,7 +125,7 @@ function Signup() {
                                 value={userData.password}
                                 onChange={handleChangeValue}
                                 autoComplete="new-password"
-                                minLength={8}
+                                minLength={4}
                                 required
                             />
 

@@ -1,15 +1,31 @@
 import Icon from "./Icons.jsx";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext.jsx";
 
 const items = [
   { key: "dashboard", route: "/dashboard", label: "Dashboard", icon: "home" },
   { key: "attendance", route: "/", label: "Attendance", icon: "clock" },
-  { key: "employees", route: "/employees", label: "Employees", icon: "users" },
-  { key: "reports", route: "/reports", label: "Reports", icon: "report" },
-  { key: "settings", route: "/settings", label: "Settings", icon: "settings" },
+  // { key: "employees", route: "/employees", label: "Employees", icon: "users" },
+  // { key: "reports", route: "/reports", label: "Reports", icon: "report" },
+  // { key: "settings", route: "/settings", label: "Settings", icon: "settings" },
 ];
 
 export default function Sidebar() {
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const isAdmin = user?.role === "admin" || user?.role === "superadmin";
+
+
+  const initials = user?.name
+    ? user.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
+    : "AD";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <aside className="sidebar">
       <div className="brand">
@@ -44,13 +60,29 @@ export default function Sidebar() {
           <Icon name="chevRight" size={16} />
         </button>
 
-        <div className="side-user">
-          <div className="avatar mint">AS</div>
-          <div>
-            <strong>Admin User</strong>
-            <span>Super Admin</span>
-          </div>
-        </div>
+        {
+          isAuthenticated ? (
+            <div className="side-user">
+              <div className="avatar mint">{initials}</div>
+              <div className="side-user-info">
+                <strong>{user?.name ?? "Admin User"}</strong>
+                <span>{user?.role ?? "Super Admin"}</span>
+              </div>
+              <button
+                className="sidebar-logout-btn"
+                onClick={handleLogout}
+                aria-label="Logout"
+                title="Logout"
+              >
+                <Icon name="logout" size={18} />
+              </button>
+            </div>
+          ) : (
+            <button className="sidebar-login-btn" onClick={() => navigate("/login")}>
+              <Icon name="login" size={18} />
+              <span>Login</span>
+            </button>
+          )}
       </div>
     </aside>
   );
