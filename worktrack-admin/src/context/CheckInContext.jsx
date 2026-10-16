@@ -1,9 +1,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/api";
+import { useAuth } from "./authContext.jsx";
 
 const CheckInContext = createContext(null);
 
 export const CheckInProvider = ({ children }) => {
+    const { isAuthenticated, loading: authLoading } = useAuth();
     const [attendanceData, setAttendanceData] = useState([]);
     const [loading, setLoading] = useState(false)
 
@@ -32,8 +34,10 @@ export const CheckInProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        fetchAttendanceData();
-    }, []);
+        if (!authLoading && isAuthenticated) {
+            fetchAttendanceData();
+        }
+    }, [authLoading, isAuthenticated]);
 
 
 

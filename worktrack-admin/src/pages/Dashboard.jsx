@@ -47,6 +47,33 @@ function Dashboard() {
         return () => clearInterval(timer);
     }, [session]);
 
+    useEffect(() => {
+        if (loading || !user) return;
+
+        const restoreActiveCheckIn = async () => {
+            setRequestLoading(true);
+            try {
+                const response = await api.get("/api/checkinout/active");
+                const activeCheckIn = response.data.data;
+                setSession(activeCheckIn);
+
+                if (activeCheckIn?.checkIn) {
+                    setLocation(activeCheckIn.location);
+                    setWorkingMs(Date.now() - new Date(activeCheckIn.checkIn).getTime());
+                }
+            } catch (err) {
+                setError(
+                    err.response?.data?.message ||
+                    "Unable to load your current check-in. Please refresh and try again."
+                );
+            } finally {
+                setRequestLoading(false);
+            }
+        };
+
+        restoreActiveCheckIn();
+    }, [loading, user]);
+
     // Obtain current location
     const getCurrentLocation = () => {
         return new Promise((resolve, reject) => {

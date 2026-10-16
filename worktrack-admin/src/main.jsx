@@ -9,10 +9,10 @@ import PageRoute from "./routes/Route.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CheckInProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <CheckInProvider>
         <PageRoute />
-      </AuthProvider>
-    </CheckInProvider>
+      </CheckInProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

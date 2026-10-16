@@ -64,6 +64,22 @@ const checkOut = async (req, res, next) => {
     }
 }
 
+const getActiveCheckIn = async (req, res, next) => {
+    try {
+        const activeCheckIn = await CheckInOut.findOne({
+            userId: req.user._id,
+            checkOut: null
+        });
+
+        return res.status(200).json({
+            success: true,
+            data: activeCheckIn
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 // const getAllAttendance = async (req, res, next) => {
 //     try {
@@ -105,4 +121,4 @@ const getAttendanceByDate = async (req, res, next) => {
     }
 };
 
-module.exports = { checkIn, checkOut, getAttendanceByDate }
+module.exports = { checkIn, checkOut, getActiveCheckIn, getAttendanceByDate }

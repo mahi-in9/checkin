@@ -1,4 +1,4 @@
-const { checkIn, checkOut, getAttendanceByDate } = require("../controllers/checkinout.controller");
+const { checkIn, checkOut, getActiveCheckIn, getAttendanceByDate } = require("../controllers/checkinout.controller");
 
 const authMiddleware = require("../middlewares/auth.middleware")
 const requireRole = require("../middlewares/requireRole")
@@ -12,6 +12,7 @@ const router = express.Router()
 
 router.use(authMiddleware)
 
+router.get("/active", getActiveCheckIn)
 router.post("/date", requireRole("admin"), getAttendanceByDate)
 router.post("/checkin", checkIn)
 router.post("/checkout", checkOut)

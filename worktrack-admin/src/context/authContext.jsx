@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem("token")
         if (token) {
             fetchCurrentUser()
+        } else {
+            setLoading(false)
         }
     }, [])
 
