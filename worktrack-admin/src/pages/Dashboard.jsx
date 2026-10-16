@@ -92,7 +92,7 @@ function Dashboard() {
                 },
                 (err) => reject(err),
                 {
-                    enableHighAccuracy: false,
+                    enableHighAccuracy: true,
                     maximumAge: 60_000,
                     timeout: 15000,
                 }
@@ -113,6 +113,8 @@ function Dashboard() {
                 location: {
                     latitude: currentLocation.latitude,
                     longitude: currentLocation.longitude,
+                    name: currentLocation.name || "Unknown",
+                    address: currentLocation.address || "Address unavailable"
                 },
             });
 
@@ -145,37 +147,50 @@ function Dashboard() {
 
     // Check out
     const handleCheckOut = async () => {
-
-        if (!session?.checkIn || !isCheckedIn) {
-            return
-        }
-
-        const elapsed = Date.now() - new Date(session.checkIn).getTime()
-
-        if (elapsed < EIGHT_HOURS) {
-            const remainingMs = EIGHT_HOURS - elapsed;
-
-            alert(
-                `You cannot check out yet. Please complete 8 hours of work.\nTime remaining: ${formatDuration(remainingMs)}`
-            )
-            return
+        if (!session?.checkIn || !isCheckedIn || requestLoading) {
+            return;
         }
 
         setError("");
         setNotice("");
-        setRequestLoading(true);
+
+        const elapsed =
+            Date.now() - new Date(session.checkIn).getTime();
+
+        if (elapsed < EIGHT_HOURS) {
+            const confirmed = window.confirm(
+                "You have not completed 8 hours. Are you sure you want to force checkout?"
+            );
+
+            if (!confirmed) return;
+        }
 
         try {
-            // The backend should generate the authoritative checkout time.
-            await api.post("/api/checkinout/checkout");
+            setRequestLoading(true);
 
-            setSession(null);
-            setWorkingMs(0);
+            const endpoint =
+                elapsed < EIGHT_HOURS
+                    ? "/api/checkinout/force-checkout"
+                    : "/api/checkinout/checkout";
 
-            setNotice("You have successfully checked out.");
-        } catch (err) {
+            const response = await api.post(endpoint);
+
+            if (response.data.success) {
+                setSession(null);
+                setWorkingMs(0);
+
+                setNotice(
+                    elapsed < EIGHT_HOURS
+                        ? "Force checkout successful."
+                        : "You have successfully checked out."
+                );
+                setLocation(null);
+            }
+        } catch (error) {
+            console.error("Checkout error:", error);
+
             setError(
-                err.response?.data?.message ||
+                error.response?.data?.message ||
                 "Unable to check out. Please try again."
             );
         } finally {
@@ -244,13 +259,13 @@ function Dashboard() {
                         {formattedDate}
                     </span>
 
-                    <button
+                    {/* <button
                         type="button"
                         className="wt-icon-button"
                         aria-label="Notifications"
                     >
                         <Bell size={21} />
-                    </button>
+                    </button> */}
 
                     <div className="wt-user-avatar">
                         {user?.name?.charAt(0)?.toUpperCase() || "U"}
@@ -423,6 +438,7 @@ function Dashboard() {
                                 <strong>Current Coordinates</strong>
                                 <span>Lat: {location.latitude.toFixed(5)}</span>
                                 <span>Lng: {location.longitude.toFixed(5)}</span>
+                                <span>Name: {location.name}</span>
                             </div>
                         </div>
 

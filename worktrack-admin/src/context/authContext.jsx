@@ -6,6 +6,7 @@ const AuthContext = createContext(null)
 export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
+    const [allUsers, setAllUsers] = useState([])
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
@@ -20,9 +21,20 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false)
             }
         }
+
+        const getAllUsers = async () => {
+            try {
+                const res = await api.get("/api/auth/users")
+                setAllUsers(res.data.data)
+                return res.data.data;
+            } catch (error) {
+                throw error
+            }
+        }
         const token = localStorage.getItem("token")
         if (token) {
-            fetchCurrentUser()
+            getAllUsers(),
+                fetchCurrentUser()
         } else {
             setLoading(false)
         }
@@ -60,6 +72,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+
     const logout = () => {
         localStorage.removeItem("token")
         setUser(null)
@@ -72,7 +85,8 @@ export const AuthProvider = ({ children }) => {
             logout,
             user,
             isAuthenticated: Boolean(user),
-            loading
+            loading,
+            allUsers
         }}>
             {children}
         </AuthContext.Provider>

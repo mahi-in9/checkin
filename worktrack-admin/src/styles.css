@@ -740,93 +740,22 @@ tbody tr:hover {
     background: #e9eeea;
 }
 
-.map-canvas {
-    position: absolute;
-    inset: 0;
-    transform-origin: 50% 50%;
-    transition: transform .25s ease;
-}
-
-.map-svg {
-    position: absolute;
-    inset: 0;
+.map-leaflet {
     width: 100%;
     height: 100%;
 }
 
-.map-label {
+.map-empty {
     position: absolute;
+    z-index: 1000;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .94);
+    color: #52616b;
     font-size: 12px;
-    color: #2c3a40;
-    line-height: 1.2;
-    font-weight: 500;
-}
-
-.map-label small {
-    font-size: 11.5px;
-    font-weight: 400;
-}
-
-.map-label.big {
-    font-size: 17px;
-    font-weight: 500;
-    color: #1b2a30;
-}
-
-.map-label.big small {
-    font-size: 15px;
-}
-
-.map-label.airport {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    color: #1f5fa8;
-}
-
-.plane {
-    color: #1f6fd0;
-    background: #fff;
-    border-radius: 50%;
-    padding: 3px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
-}
-
-.pin {
-    position: absolute;
-    transform: translate(-50%, -100%);
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .25));
-}
-
-.zoom {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
-    overflow: hidden;
-}
-
-.zoom button {
-    width: 34px;
-    height: 32px;
-    border: 0;
-    background: #fff;
-    display: grid;
-    place-items: center;
-    color: #222;
-}
-
-.zoom button+button {
-    border-top: 1px solid #e3e7e9;
-}
-
-.zoom button:hover {
-    background: #f1f4f5;
 }
 
 .summary-body {

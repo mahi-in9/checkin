@@ -5,6 +5,8 @@ const checkinoutSchema = new mongoose.Schema({
     checkIn: { type: Date, required: true, default: Date.now },
     location: {
         type: {
+            name: String,
+            address: String,
             latitude: Number,
             longitude: Number,
         },

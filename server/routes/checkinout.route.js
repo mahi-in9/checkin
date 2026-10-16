@@ -1,4 +1,4 @@
-const { checkIn, checkOut, getActiveCheckIn, getAttendanceByDate } = require("../controllers/checkinout.controller");
+const { checkIn, checkOut, getActiveCheckIn, getAttendanceByDate, forceCheckout } = require("../controllers/checkinout.controller");
 
 const authMiddleware = require("../middlewares/auth.middleware")
 const requireRole = require("../middlewares/requireRole")
@@ -16,5 +16,6 @@ router.get("/active", getActiveCheckIn)
 router.post("/date", requireRole("admin"), getAttendanceByDate)
 router.post("/checkin", checkIn)
 router.post("/checkout", checkOut)
+router.post("/force-checkout", forceCheckout);
 
 module.exports = router

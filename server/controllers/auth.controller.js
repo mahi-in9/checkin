@@ -70,4 +70,15 @@ const getMe = async (req, res, next) => {
     }
 }
 
-module.exports = { register, login, getMe }
+const allUsers = async (req, res, next) => {
+    try {
+        const users = await User.find();
+
+        return res.status(200).json({ message: "users fetched successfully", data: users })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { register, login, getMe, allUsers }

@@ -1,15 +1,41 @@
 import React from "react";
 import Icon from "./Icons.jsx";
+
+import { useAuth } from "../context/authContext.jsx";
 import { useCheckIn } from "../context/CheckInContext.jsx";
 
 export default function StatCards({ stats }) {
-  const pct = (n) => Math.round((n / stats.total) * 100);
+  const { attendanceData } = useCheckIn()
+  const { allUsers } = useAuth();
+
+  const totalUsers = allUsers ? allUsers.length : 0;
+
+  const checkedInCount = attendanceData.filter((d) => d.checkIn).length;
+  const checkedOutCount = attendanceData.filter((d) => d.checkOut).length;
+
+  const totalHoursPerUser = attendanceData.reduce((total, d) => {
+    if (d.checkIn && d.checkOut) {
+      const checkInTime = new Date(d.checkIn);
+      const checkOutTime = new Date(d.checkOut);
+      const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
+      return total + hoursWorked;
+    }
+    return total;
+  }, 0);
+
+  const usersWith5hours = totalHoursPerUser >= 5 ? 1 : 0;
+
+  const absentCount = totalUsers - usersWith5hours;
+
+  const pct = (n) => totalUsers ? Math.round((n / totalUsers) * 100) : 0;
   const cards = [
-    // { label: "Total Employees", value: stats.total, tone: "mint", icon: "users",
-    //   sub: <span className="up"><Icon name="arrowUp" size={13} stroke={2.2} /> +12% from last month</span> },
-    { label: "Checked In", value: stats.checkedIn, tone: "green", icon: "check", sub: `${pct(stats.checkedIn)}% of total` },
-    { label: "Checked Out", value: stats.checkedOut, tone: "grey", icon: "clock", sub: `${pct(stats.checkedOut)}% of total` },
-    { label: "Absent", value: stats.absent, tone: "red", icon: "user", sub: `${pct(stats.absent)}% of total` },
+    {
+      label: "Total Employees", value: totalUsers, tone: "mint", icon: "users",
+      sub: <span className="up"><Icon name="arrowUp" size={13} stroke={2.2} /> {pct(totalUsers)}% from last month</span>
+    },
+    { label: "Checked In", value: checkedInCount, tone: "green", icon: "check", sub: `${pct(checkedInCount)}% of total` },
+    { label: "Checked Out", value: checkedOutCount, tone: "grey", icon: "clock", sub: `${pct(checkedOutCount)}% of total` },
+    { label: "Absent", value: absentCount, tone: "red", icon: "user", sub: `${pct(absentCount)}% of total` },
   ];
 
   return (

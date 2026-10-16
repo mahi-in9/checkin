@@ -33,6 +33,8 @@ import { departments, initials } from "../data.js";
 
 export default function AttendanceTable({ rows = [], userId, query, onQuery, dept, onDept, title = "Today's Attendance" }) {
 
+  // console.log("AttendanceTable rows:", rows)
+
   return (
     <section className="card table-card">
       <div className="table-head">
@@ -49,7 +51,7 @@ export default function AttendanceTable({ rows = [], userId, query, onQuery, dep
             </select>
             <Icon name="chevDown" size={16} />
           </div> */}
-          <button className="icon-btn boxed" aria-label="Filters"><Icon name="filter" size={18} /></button>
+          {/* <button className="icon-btn boxed" aria-label="Filters"><Icon name="filter" size={18} /></button> */}
         </div>
       </div>
 
@@ -62,7 +64,7 @@ export default function AttendanceTable({ rows = [], userId, query, onQuery, dep
               <th>Check In</th>
               <th>Check Out</th>
               {/* <th>Total Hours</th> */}
-              {/* <th>Location</th> */}
+              <th>Location</th>
               {/* <th>IP Address</th> */}
               {/* <th>Status</th> */}
               {/* <th className="c-act"><Icon name="more" size={16} /></th> */}
@@ -98,7 +100,7 @@ export default function AttendanceTable({ rows = [], userId, query, onQuery, dep
                     hour12: true,
                   }) : (<p>-</p>)}</td>
                   {/* <td>{e.hours}</td> */}
-                  {/* <td>{e.location}</td> */}
+                  <td>{e.location?.name || "Unknown location"}</td>
                   {/* <td>{e.ip}</td> */}
                   {/* <td><span className={"badge " + badgeClass(e.status)}>{e.status}</span></td> */}
                   {/* <td className="c-act"><RowMenu employee={e} /></td> */}

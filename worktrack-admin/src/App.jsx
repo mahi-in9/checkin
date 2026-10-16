@@ -9,6 +9,7 @@ import SummaryDonut from "./components/SummaryDonut.jsx";
 import { EmployeesPage, ReportsPage, SettingsPage } from "./pages/OtherPages.jsx";
 import { employees, stats } from "./data.js";
 import { useCheckIn } from "./context/CheckInContext.jsx";
+import { useAuth } from "./context/authContext.jsx";
 
 const titles = {
   dashboard: ["Dashboard", "Overview of your team's activity."],
@@ -25,6 +26,7 @@ export default function App() {
   const [date, setDate] = useState(new Date(Date.now()));
 
   const { attendanceData, fetchAttendanceData, loading } = useCheckIn()
+  const { allUsers } = useAuth();
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -82,7 +84,7 @@ export default function App() {
           {showTable && (
             <div className="bottom-grid">
               <LocationMap />
-              <SummaryDonut stats={stats} />
+              <SummaryDonut stats={stats} users={allUsers} attendanceData={attendanceData} />
             </div>
           )}
 

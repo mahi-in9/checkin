@@ -3,16 +3,52 @@ import React from "react";
 const R = 78;
 const C = 2 * Math.PI * R;
 
-export default function SummaryDonut({ stats }) {
-  const pct = (n) => Math.round((n / stats.total) * 100);
+export default function SummaryDonut({ stats, users, attendanceData }) {
+
+
+  // const pct = (n) => Math.round((n / stats.total) * 100);
+  // const legend = [
+  //   { label: "Checked In", value: stats.checkedIn, color: "#0f9a88" },
+  //   { label: "Checked Out", value: stats.checkedOut, color: "#9aa5ad" },
+  //   { label: "Absent", value: stats.absent, color: "#ef4444" },
+  // ];
+
+  // const teal = (stats.checkedIn / stats.total) * C;
+  // const grey = (stats.checkedOut / stats.total) * C;
+
+  // console.log(users, attendanceData)
+  const totalUsers = users ? users.length : 0;
+
+  const checkedInCount = attendanceData.filter((d) => d.checkIn).length;
+  const checkedOutCount = attendanceData.filter((d) => d.checkOut).length;
+  const totalHoursPerUser = attendanceData.reduce((total, d) => {
+    if (d.checkIn && d.checkOut) {
+      const checkInTime = new Date(d.checkIn);
+      const checkOutTime = new Date(d.checkOut);
+      const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
+      return total + hoursWorked;
+    }
+    return total;
+  }, 0);
+
+  const usersWith5hours = totalHoursPerUser >= 5 ? 1 : 0;
+
+  const absentCount = totalUsers - usersWith5hours;
+  // console.log(totalUsers, checkedInCount, checkedOutCount, absentCount)
+
+  const pct = (n) => totalUsers ? Math.round((n / totalUsers) * 100) : 0;
+
   const legend = [
-    { label: "Checked In", value: stats.checkedIn, color: "#0f9a88" },
-    { label: "Checked Out", value: stats.checkedOut, color: "#9aa5ad" },
-    { label: "Absent", value: stats.absent, color: "#ef4444" },
+    { label: "Checked In", value: checkedInCount, color: "#0f9a88" },
+    { label: "Checked Out", value: checkedOutCount, color: "#9aa5ad" },
+    { label: "Absent", value: absentCount, color: "#ef4444" },
   ];
 
-  const teal = (stats.checkedIn / stats.total) * C;
-  const grey = (stats.checkedOut / stats.total) * C;
+  const teal = (checkedInCount / totalUsers) * C;
+  const grey = (checkedOutCount / totalUsers) * C;
+
+
+
 
   return (
     <section className="card summary-card">
@@ -29,7 +65,7 @@ export default function SummaryDonut({ stats }) {
             </g>
           </svg>
           <div className="donut-center">
-            <strong>{stats.total}</strong>
+            <strong>{totalUsers}</strong>
             <span>Employees</span>
           </div>
         </div>
