@@ -8,6 +8,7 @@ import { useAuth } from "../context/authContext.jsx";
 import ForgotPassword from "../pages/ForgotPassword.jsx";
 import ResetPassword from "../pages/ResetPassword.jsx";
 import AddEmployee from "../pages/AddEmployee.jsx";
+import Employees from "../pages/Employees.jsx";
 
 function AuthLoader() {
     const { loading } = useAuth();
@@ -72,6 +73,7 @@ function PageRoute() {
                         <Route element={<AdminRoute />}>
                             <Route path="/" element={<App />} />
                             <Route path="/add-employee" element={<AddEmployee />} />
+                            <Route path="/employees" element={<Employees />} />
                         </Route>
 
                     </Route>

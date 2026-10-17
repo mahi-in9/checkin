@@ -6,7 +6,7 @@ const items = [
   { key: "attendance", route: "/attendance", label: "Attendance", icon: "clock" },
   { key: "admin-dashboard", route: "/", label: "Admin Dashboard", icon: "home" },
   { key: "add-employee", route: "/add-employee", label: "Add Employee", icon: "plus" },
-  // { key: "reports", route: "/reports", label: "Reports", icon: "report" },
+  { key: "employees", route: "/employees", label: "Employees", icon: "user" },
   // { key: "settings", route: "/settings", label: "Settings", icon: "settings" },
 ];
 
@@ -40,7 +40,7 @@ export default function Sidebar() {
       <nav className="nav">
         {items
           .filter((item) => {
-            const isAdminItem = ["admin-dashboard", "add-employee"].includes(
+            const isAdminItem = ["admin-dashboard", "add-employee", "employees"].includes(
               item.key
             );
 
