@@ -400,4 +400,59 @@ const addEmployee = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers, addEmployee }
+const updateEmployeeStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { isActive } = req.body;
+
+    if (typeof isActive !== "boolean") {
+      return res.status(400).json({
+        message: "isActive must be true or false.",
+      });
+    }
+
+    const employee = await User.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({
+        message: "Employee not found.",
+      });
+    }
+
+    // Prevent an admin from accidentally deactivating their own account.
+    const currentUserId =
+      typeof req.user === "object"
+        ? req.user.id || req.user._id
+        : req.user;
+
+    if (
+      String(employee._id) === String(currentUserId) &&
+      !isActive
+    ) {
+      return res.status(400).json({
+        message: "You cannot deactivate your own account.",
+      });
+    }
+
+    employee.isActive = isActive;
+    await employee.save();
+
+    return res.status(200).json({
+      success: true,
+      message: `Employee ${isActive ? "activated" : "deactivated"} successfully.`,
+      data: {
+        _id: employee._id,
+        employeeId: employee.employeeId,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        isActive: employee.isActive,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { updateEmployeeStatus };
+
+module.exports = { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers, addEmployee, updateEmployeeStatus }

@@ -1,4 +1,4 @@
-const { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers, addEmployee } = require("../controllers/auth.controller")
+const { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers, addEmployee, updateEmployeeStatus } = require("../controllers/auth.controller")
 const express = require("express")
 const router = express.Router()
 
@@ -14,5 +14,6 @@ router.use(authMiddleware)
 router.get("/me", getMe)
 router.get("/users", requireRole("admin"), allUsers)
 router.post("/add-employee", requireRole("admin"), addEmployee)
+router.put("/update-employee-status/:id", requireRole("admin"), updateEmployeeStatus)
 
 module.exports = router

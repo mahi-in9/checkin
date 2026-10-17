@@ -8,6 +8,7 @@ function Employees() {
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [updatingEmployeeId, setUpdatingEmployeeId] = useState(null);
 
     const fetchEmployees = useCallback(async () => {
         setLoading(true);
@@ -77,6 +78,46 @@ function Employees() {
             month: "short",
             year: "numeric",
         });
+    };
+
+    const handleToggleStatus = async (employee) => {
+        const currentlyActive = employee.isActive !== false;
+        const newStatus = !currentlyActive;
+
+        const action = newStatus ? "activate" : "deactivate";
+
+        const confirmed = window.confirm(
+            `Are you sure you want to ${action} ${employee.firstName} ${employee.lastName}?`
+        );
+
+        if (!confirmed) return;
+
+        setUpdatingEmployeeId(employee._id);
+        setError("");
+
+        try {
+            const response = await api.put(
+                `/api/auth/update-employee-status/${employee._id}`,
+                { isActive: newStatus }
+            );
+
+            const updatedEmployee = response.data.data;
+
+            setEmployees((prev) =>
+                prev.map((item) =>
+                    item._id === employee._id
+                        ? { ...item, isActive: updatedEmployee.isActive }
+                        : item
+                )
+            );
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Failed to update employee status."
+            );
+        } finally {
+            setUpdatingEmployeeId(null);
+        }
     };
 
     return (
@@ -225,6 +266,8 @@ function Employees() {
                                     <th>SHIFT</th>
                                     <th>DATE OF BIRTH</th>
                                     <th>ROLE</th>
+                                    <th>STATUS</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
 
@@ -269,12 +312,38 @@ function Employees() {
                                         <td>
                                             <span
                                                 className={`role-badge ${employee.role === "admin"
-                                                        ? "role-admin"
-                                                        : "role-user"
+                                                    ? "role-admin"
+                                                    : "role-user"
                                                     }`}
                                             >
                                                 {employee.role || "user"}
                                             </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                className={`employee-status ${employee.isActive === false ? "status-inactive" : "status-active"
+                                                    }`}
+                                            >
+                                                {employee.isActive === false ? "Inactive" : "Active"}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <button
+                                                type="button"
+                                                className={`employee-status-btn ${employee.isActive === false
+                                                    ? "activate-btn"
+                                                    : "deactivate-btn"
+                                                    }`}
+                                                onClick={() => handleToggleStatus(employee)}
+                                                disabled={updatingEmployeeId === employee._id}
+                                            >
+                                                {updatingEmployeeId === employee._id
+                                                    ? "Updating..."
+                                                    : employee.isActive === false
+                                                        ? "Activate"
+                                                        : "Deactivate"}
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

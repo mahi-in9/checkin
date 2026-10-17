@@ -1,4 +1,5 @@
 const CheckInOut = require("../models/checkinout.model")
+const User = require("../models/user.model")
 const axios = require("axios")
 
 const checkIn = async (req, res, next) => {
@@ -20,9 +21,18 @@ const checkIn = async (req, res, next) => {
             });
         }
 
+        const activeUser = await User.findById({ _id: userId });
+
+        if (!activeUser || !activeUser.isActive) {
+            return res.status(403).json({
+                success: false,
+                message: "User is not active. Please contact the administrator.",
+            });
+        }
+
         const activeCheckIn = await CheckInOut.findOne({
             userId,
-            checkOut: null
+            checkOut: null,
         })
 
         if (activeCheckIn) {
