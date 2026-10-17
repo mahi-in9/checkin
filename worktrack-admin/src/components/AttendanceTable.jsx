@@ -74,7 +74,7 @@ export default function AttendanceTable({ rows = [], userId, query, onQuery, dep
             {rows.map((e, i) => {
               // API attendance records have a populated `userId`; local/demo employee
               // rows use `name` directly. Support both while data sources are unified.
-              const employeeName = e.userId?.name || e.name || "Unknown employee";
+              const employeeName = `${e.userId?.firstName} ${e.userId?.lastName}` || e.name || "Unknown employee";
               return (
                 <tr key={e._id || e.id || `${employeeName}-${i}`}>
                   <td className="c-num">{i + 1}</td>

@@ -27,12 +27,13 @@ export default function App() {
 
   const { attendanceData, fetchAttendanceData, loading } = useCheckIn()
   const { allUsers } = useAuth();
+  // console.log("App attendanceData:", attendanceData);
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
     return attendanceData.filter(
       (e) =>
-        (e.userId.name.toLowerCase().includes(q) || e.userId.email.toLowerCase().includes(q))
+        (e.userId.firstName.toLowerCase().includes(q) || e.userId.email.toLowerCase().includes(q)) || (e.userId.lastName.toLowerCase().includes(q))
     );
   }, [query, attendanceData]);
 

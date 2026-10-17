@@ -1,4 +1,4 @@
-const { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers } = require("../controllers/auth.controller")
+const { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers, addEmployee } = require("../controllers/auth.controller")
 const express = require("express")
 const router = express.Router()
 
@@ -13,6 +13,6 @@ router.post("/reset-password/:token", resetPasswordControllers)
 router.use(authMiddleware)
 router.get("/me", getMe)
 router.get("/users", requireRole("admin"), allUsers)
-
+router.post("/add-employee", requireRole("admin"), addEmployee)
 
 module.exports = router

@@ -7,6 +7,7 @@ import Signup from "../pages/Signup.jsx";
 import { useAuth } from "../context/authContext.jsx";
 import ForgotPassword from "../pages/ForgotPassword.jsx";
 import ResetPassword from "../pages/ResetPassword.jsx";
+import AddEmployee from "../pages/AddEmployee.jsx";
 
 function AuthLoader() {
     const { loading } = useAuth();
@@ -35,7 +36,7 @@ function AdminRoute() {
     if (loading) return null;
     if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-    const isAdmin = user?.role === "admin" || user?.role === "superadmin";
+    const isAdmin = user?.user.role === "admin";
     if (!isAdmin) return <Navigate to="/dashboard" replace />; // send employees to their own page
 
     return <Outlet />;
@@ -65,16 +66,17 @@ function PageRoute() {
                     <Route element={<ProtectedRoute />}>
 
                         {/* Employee page */}
-                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/attendance" element={<Dashboard />} />
 
                         {/* Admin only — employees get redirected to /dashboard */}
                         <Route element={<AdminRoute />}>
                             <Route path="/" element={<App />} />
+                            <Route path="/add-employee" element={<AddEmployee />} />
                         </Route>
 
                     </Route>
 
-                    <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                    <Route path="*" element={<Navigate to="/attendance" replace />} />
 
                 </Route>
             </Routes>

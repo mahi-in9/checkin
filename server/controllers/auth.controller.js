@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const crypto = require("crypto")
 const nodemailer = require("nodemailer");
+const CheckInOut = require("../models/checkinout.model")
 
 const transporter = nodemailer.createTransport({
   service: "Gmail",
@@ -14,7 +15,7 @@ const transporter = nodemailer.createTransport({
 
 const register = async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { employeeId, firstName, lastName, DOB, shift, designation, email, password, role } = req.body;
     const existingUser = await User.findOne({ email })
     if (existingUser) {
       const err = new Error("user already exist")
@@ -23,7 +24,7 @@ const register = async (req, res, next) => {
     }
     const hashPassword = await bcrypt.hash(password, 10)
 
-    const user = await User.create({ name, email, password: hashPassword, role })
+    const user = await User.create({ employeeId, firstName, lastName, DOB, shift, designation, email, password: hashPassword, role })
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_TOKEN, { expiresIn: "8h" })
 
@@ -54,8 +55,46 @@ const login = async (req, res, next) => {
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_TOKEN, { expiresIn: "8h" })
 
-    return res.status(200).json({ success: true, message: "user logged-in successfully", data: { token, user } })
+    const checkInOut = await CheckInOut.findOne({
+      userId: user._id
+    }).sort({ checkIn: -1 });
 
+    // Check today's check-in and check-out
+    const todayCheckIn = Boolean(
+      checkInOut?.checkIn &&
+      new Date(checkInOut.checkIn).toDateString() ===
+      new Date().toDateString()
+    );
+
+    const todayCheckOut = Boolean(
+      checkInOut?.checkOut &&
+      new Date(checkInOut.checkOut).toDateString() ===
+      new Date().toDateString()
+    );
+
+    // Exclude sensitive fields from the response
+    const safeUser = {
+      _id: user._id,
+      employeeId: user.employeeId,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      designation: user.designation,
+      DOB: user.DOB,
+      shift: user.shift
+    };
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      data: {
+        token,
+        user: safeUser,
+        todayCheckIn,
+        todayCheckOut
+      }
+    });
   } catch (error) {
     next(error)
   }
@@ -67,13 +106,19 @@ const getMe = async (req, res, next) => {
 
     const user = await User.findOne(_id);
 
+    const checkInoOut = await CheckInOut.findOne({ userId: _id }).sort({ checkIn: -1 });
+
+    const todayCheckIn = checkInoOut && checkInoOut.checkIn && new Date(checkInoOut.checkIn).toDateString() === new Date().toDateString();
+
+    const todayCheckOut = checkInoOut && checkInoOut.checkOut && new Date(checkInoOut.checkOut).toDateString() === new Date().toDateString();
+
     if (!user) {
       const err = new Error("user not found");
       err.status = 404;
       throw err;
     }
 
-    return res.status(200).json({ message: "user fetched successfully", data: user })
+    return res.status(200).json({ message: "user fetched successfully", data: { user, todayCheckIn, todayCheckOut } })
 
   } catch (error) {
     next(error)
@@ -90,8 +135,6 @@ const allUsers = async (req, res, next) => {
     next(error)
   }
 }
-
-
 
 const forgotPasswordControllers = async (req, res) => {
   const { email } = req.body;
@@ -337,5 +380,24 @@ const resetPasswordControllers = async (req, res) => {
   }
 };
 
+const addEmployee = async (req, res, next) => {
+  try {
+    const { employeeId, firstName, lastName, DOB, shift, designation, email, password, role } = req.body;
+    const existingUser = await User.findOne({ email })
+    if (existingUser) {
+      const err = new Error("user already exist")
+      err.status = 400;
+      throw err;
+    }
+    const hashPassword = await bcrypt.hash(password, 10)
 
-module.exports = { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers }
+    const user = await User.create({ employeeId, firstName, lastName, DOB, shift, designation, email, password: hashPassword, role })
+
+    return res.status(201).json({ success: true, message: "user created successfully", data: { user } })
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { register, login, getMe, allUsers, forgotPasswordControllers, resetPasswordControllers, addEmployee }

@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(user)
             } catch (error) {
                 setUser(null)
-                console.error(error)
+                console.error(error?.message || "Failed to fetch current user")
             } finally {
                 setLoading(false)
             }
@@ -44,13 +44,13 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await api.post("/api/auth/register", userData)
             // if (!res.ok) throw new Error("registration failed");
-            const { token, user } = res.data.data;
+            const { token, user, ...userStatus } = res.data.data;
 
             localStorage.setItem("token", token)
-            setUser(user)
+            setUser({ user, ...userStatus })
             setLoading(false)
 
-            return res.data;
+            return res.data.data;
         } catch (error) {
             throw error
         }
@@ -60,13 +60,13 @@ export const AuthProvider = ({ children }) => {
         try {
             const res = await api.post("/api/auth/login", userData)
             // if (!res.ok) throw new Error("Login failed");
-            const { token, user } = res.data.data;
+            const { token, user, ...userStatus } = res.data.data;
 
             localStorage.setItem("token", token)
-            setUser(user)
+            setUser({ user, ...userStatus })
             setLoading(false)
 
-            return res.data;
+            return res.data.data;
         } catch (error) {
             throw error
         }

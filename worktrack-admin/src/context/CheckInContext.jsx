@@ -27,7 +27,7 @@ export const CheckInProvider = ({ children }) => {
             const res = await api.post("/api/checkinout/date", { date });
             setAttendanceData(res.data.data || []);
         } catch (error) {
-            console.error("Failed to fetch attendance:", error);
+            console.error("Failed to fetch attendance:", error.status === 403 ? "" : error?.message || "An error occurred while fetching attendance data.");
         } finally {
             setLoading(false)
         }

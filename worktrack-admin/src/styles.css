@@ -1067,6 +1067,27 @@ tbody tr:hover {
     box-shadow: 0 0 0 4px rgba(22, 142, 145, 0.1);
 }
 
+.form-group select {
+    width: 100%;
+    min-width: 0;
+    height: 49px;
+    padding: 0 14px;
+    border: 1px solid #dce5e8;
+    border-radius: 11px;
+    outline: none;
+    background: #fbfdfd;
+    color: #172b3a;
+    font: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group select:focus {
+    border-color: #168e91;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(22, 142, 145, 0.1);
+}
+
 .password-wrapper {
     display: flex;
     align-items: center;

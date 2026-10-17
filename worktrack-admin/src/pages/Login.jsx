@@ -33,7 +33,7 @@ function Login() {
         try {
             const res = await login(userData);
             console.log(res)
-            navigate("/dashboard");
+            navigate("/attendance");
         } catch (error) {
             setError(
                 error.response?.data?.message ||
@@ -152,9 +152,9 @@ function Login() {
                     Don't have an account?{" "}
                     <Link to="/signup">Create account</Link>
                 </p>
-                <p className="auth-switch">
+                {/* <p className="auth-switch">
                     <Link to="/forgot-password">Forgot password?</Link>
-                </p>
+                </p> */}
 
                 <div className="auth-footer">
                     WORKTRACK · PEOPLE · PRESENCE · PROGRESS

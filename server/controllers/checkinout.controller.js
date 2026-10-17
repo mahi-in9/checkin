@@ -181,7 +181,7 @@ const getAttendanceByDate = async (req, res, next) => {
 
         const attendanceData = await CheckInOut.find({
             checkIn: { $gte: startOfDay, $lt: endOfDay },
-        }).populate("userId", "name email department");
+        }).populate("userId", "firstName lastName email department");
 
 
         return res.status(200).json({

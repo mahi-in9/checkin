@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../context/authContext";
 import api from "../api/api";
 import "./Dashboard.css";
+import { useCheckIn } from "../context/CheckInContext";
 
 const EIGHT_HOURS = 8 * 60 * 60 * 1000;
 
@@ -204,6 +205,10 @@ function Dashboard() {
 
     const isCheckedIn = Boolean(session?.checkIn && !session?.checkOut);
 
+    const todaysCheckIn = user?.todayCheckIn || false;
+
+    const todaysCheckOut = user?.todayCheckOut || false;
+
     const remainingMs = Math.max(
         0,
         EIGHT_HOURS - workingMs
@@ -236,7 +241,7 @@ function Dashboard() {
         year: "numeric",
     });
 
-    const firstName = user?.name?.split(" ")[0] || "there";
+    const firstName = user?.user.firstName || "there";
 
     return (
         <main className="worktrack-dashboard">
@@ -268,7 +273,7 @@ function Dashboard() {
                     </button> */}
 
                     <div className="wt-user-avatar">
-                        {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                        {user?.user.firstName?.charAt(0)?.toUpperCase() || "U"}
                     </div>
                 </div>
             </header>
@@ -373,7 +378,7 @@ function Dashboard() {
                     type="button"
                     className="wt-checkin-button"
                     onClick={handleCheckIn}
-                    disabled={requestLoading}
+                    disabled={requestLoading || todaysCheckIn}
                 >
                     <span className="wt-action-icon">
                         <LogIn size={31} />
@@ -393,7 +398,7 @@ function Dashboard() {
                 type="button"
                 className="wt-checkout-button"
                 onClick={handleCheckOut}
-
+                disabled={requestLoading || todaysCheckOut || !isCheckedIn}
             >
                 <LogOut size={25} />
 
@@ -405,7 +410,7 @@ function Dashboard() {
                     <small>
                         {!canCheckOut
                             ? "Complete 8 hours to check out"
-                            : "End Your Work Day"}
+                            : "End Your Work Day"}g
                     </small>
                 </span>
             </button>
@@ -442,13 +447,13 @@ function Dashboard() {
                             </div>
                         </div>
 
-                        <div className="wt-detail-row">
+                        {/* <div className="wt-detail-row">
                             <MapPin size={18} />
                             <span>GPS Accuracy</span>
                             <strong>
                                 {Math.round(location.accuracy)} metres
                             </strong>
-                        </div>
+                        </div> */}
                     </>
                 ) : (
                     <div className="wt-empty-location">

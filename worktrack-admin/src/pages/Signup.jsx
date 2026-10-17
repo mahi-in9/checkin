@@ -8,7 +8,12 @@ function Signup() {
     const { register } = useAuth();
 
     const [userData, setUserData] = useState({
-        name: "",
+        employeeId: "",
+        firstName: "",
+        lastName: "",
+        DOB: "",
+        shift: "morning",
+        designation: "",
         email: "",
         password: "",
         role: "user",
@@ -34,7 +39,7 @@ function Signup() {
 
         try {
             await register(userData);
-            navigate("/dashboard");
+            navigate("/attendance");
         } catch (error) {
             setError(
                 error.response?.data?.message ||
@@ -86,15 +91,42 @@ function Signup() {
 
                 <form onSubmit={handleSignup} className="auth-form">
                     <div className="form-group">
-                        <label htmlFor="name">Full name</label>
+                        <label htmlFor="firstName">First Name</label>
                         <input
-                            id="name"
+                            id="firstName"
                             type="text"
-                            name="name"
-                            placeholder="Enter your full name"
-                            value={userData.name}
+                            name="firstName"
+                            placeholder="Enter your first name"
+                            value={userData.firstName}
                             onChange={handleChangeValue}
-                            autoComplete="name"
+                            autoComplete="given-name"
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="lastName">Last Name</label>
+                        <input
+                            id="lastName"
+                            type="text"
+                            name="lastName"
+                            placeholder="Enter your last name"
+                            value={userData.lastName}
+                            onChange={handleChangeValue}
+                            autoComplete="family-name"
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="employeeId">Employee ID</label>
+                        <input
+                            id="employeeId"
+                            type="text"
+                            name="employeeId"
+                            placeholder="Enter your employee ID"
+                            value={userData.employeeId}
+                            onChange={handleChangeValue}
                             required
                         />
                     </div>
@@ -146,6 +178,47 @@ function Signup() {
                         <small className="field-hint">
                             Use at least 8 characters.
                         </small>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="DOB">Date of Birth</label>
+                        <input
+                            id="DOB"
+                            type="date"
+                            name="DOB"
+                            value={userData.DOB}
+                            onChange={handleChangeValue}
+                            autoComplete="bday"
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="shift">Work Shift</label>
+                        <select
+                            id="shift"
+                            name="shift"
+                            value={userData.shift}
+                            onChange={handleChangeValue}
+                            required
+                        >
+                            <option value="morning">Morning</option>
+                            <option value="evening">Evening</option>
+                            <option value="night">Night</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="designation">Designation</label>
+                        <input
+                            id="designation"
+                            type="text"
+                            name="designation"
+                            placeholder="e.g. Software Developer"
+                            value={userData.designation}
+                            onChange={handleChangeValue}
+                            required
+                        />
                     </div>
 
                     <button
